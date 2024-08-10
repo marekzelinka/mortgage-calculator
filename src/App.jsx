@@ -26,6 +26,7 @@ function App() {
           </div>
           <div className="-m-2 max-lg:-mt-2 lg:w-full lg:max-w-md lg:flex-none">
             <div className="bg-gray-800 p-12 max-lg:py-24 lg:flex lg:h-full lg:flex-col lg:justify-center lg:rounded-bl-[theme(spacing.16)]">
+              {/* <EmptyResults /> */}
               <Results />
             </div>
           </div>
