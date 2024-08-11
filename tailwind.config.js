@@ -1,4 +1,5 @@
 import formsPlugin from '@tailwindcss/forms'
+import colors from 'tailwindcss/colors'
 import defaultTheme from 'tailwindcss/defaultTheme'
 
 /** @type {import('tailwindcss').Config} */
@@ -8,6 +9,9 @@ export default {
     extend: {
       fontFamily: {
         sans: ['InterVariable', ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        gray: colors.stone,
       },
     },
   },

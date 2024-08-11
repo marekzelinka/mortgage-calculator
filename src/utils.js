@@ -6,3 +6,5 @@ const currencyFormatter = new Intl.NumberFormat('en-US', {
 export function formatCurrency(value) {
   return currencyFormatter.format(value)
 }
+
+export const mortgageTypes = ['Repayment', 'Interest Only']
