@@ -11,13 +11,15 @@ export function Results({ results }) {
       </p>
       <dl className="mt-6 divide-y divide-white/5 rounded-md border-t-4 border-lime-500 bg-gray-900 px-4">
         <div className="py-5">
-          <dt className="text-sm/6 text-gray-400">Your monthly repayments</dt>
+          <dt className="text-sm/6 font-medium text-gray-400">
+            Your monthly repayments
+          </dt>
           <dd className="mt-2 text-4xl font-semibold tracking-tight text-lime-500">
             {formatCurrency(results.monthlyRepayments)}
           </dd>
         </div>
         <div className="py-5">
-          <dt className="text-sm/6 text-gray-400">
+          <dt className="text-sm/6 font-medium text-gray-400">
             Total you'll repay over the term
           </dt>
           <dd className="mt-2 text-2xl font-semibold text-white">

@@ -192,7 +192,7 @@ export function EmptyResults() {
       <h3 className="mt-4 text-center text-xl font-bold text-white">
         Results shown here
       </h3>
-      <p className="mt-2 text-sm text-gray-400">
+      <p className="mt-2 text-center text-sm text-gray-400">
         Complete the form and click &quot;calculate repayments&quot; to see what
         your monthly repayments would be.
       </p>
