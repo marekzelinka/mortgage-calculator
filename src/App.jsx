@@ -1,24 +1,27 @@
-import { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { Calculator } from './components/Calculator.jsx'
-import { EmptyResults } from './components/EmptyResults.jsx'
-import { Results } from './components/Results.jsx'
-import { mortgageTypes } from './utils.js'
+import { useRef, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { Calculator } from "./components/Calculator.jsx";
+import { EmptyResults } from "./components/EmptyResults.jsx";
+import { Results } from "./components/Results.jsx";
+import { mortgageTypes } from "./utils.js";
 
 function App() {
-  const [results, setResults] = useState(null)
+  const [results, setResults] = useState(null);
 
   const methods = useForm({
-    mode: 'onSubmit',
+    mode: "onSubmit",
     defaultValues: {
       type: mortgageTypes[0],
     },
-  })
+  });
+
+  const calculatorFormRef = useRef(null);
 
   const handleReset = () => {
-    setResults(null)
-    methods.reset()
-  }
+    setResults(null);
+    methods.reset();
+    calculatorFormRef.current?.focusFirstInput();
+  };
 
   return (
     <main className="isolate flex min-h-svh flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
@@ -41,7 +44,7 @@ function App() {
             </div>
             <div className="mt-10">
               <FormProvider {...methods}>
-                <Calculator onSubmit={setResults} />
+                <Calculator ref={calculatorFormRef} onSubmit={setResults} />
               </FormProvider>
             </div>
           </div>
@@ -53,7 +56,7 @@ function App() {
         </div>
       </div>
     </main>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -2,7 +2,6 @@ export function EmptyResults() {
   return (
     <div>
       <svg
-        xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 192 192"
         fill="none"
         className="mx-auto size-40"
@@ -193,9 +192,9 @@ export function EmptyResults() {
         Results shown here
       </h3>
       <p className="mt-2 text-center text-sm text-gray-400">
-        Complete the form and click &quot;calculate repayments&quot; to see what
+        Complete the form and click &quot;Calculate repayments&quot; to see what
         your monthly repayments would be.
       </p>
     </div>
-  )
+  );
 }

@@ -1,33 +1,48 @@
-import { CalculatorIcon } from '@heroicons/react/20/solid'
-import { useFormContext } from 'react-hook-form'
-import { mortgageTypes } from '../utils.js'
+import { CalculatorIcon } from "@heroicons/react/16/solid";
+import { forwardRef, useImperativeHandle, useRef } from "react";
+import { useFormContext } from "react-hook-form";
+import { mortgageTypes } from "../utils.js";
 
-export function Calculator({ onSubmit }) {
+export const Calculator = forwardRef(({ onSubmit }, ref) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useFormContext()
+  } = useFormContext();
+
+  const amountInputRef = useRef(null);
+
+  const { ref: amountRef, ...amountRegister } = register("amount", {
+    required: { value: true, message: "Required" },
+    min: { value: 0.01, message: "Must be greater than 0" },
+    valueAsNumber: true,
+  });
+
+  useImperativeHandle(ref, () => {
+    return {
+      focusFirstInput: () => amountInputRef.current?.focus(),
+    };
+  }, []);
 
   const handleFormSubmit = ({ amount, term, interestRate, type }) => {
-    term = term * 12
-    interestRate = interestRate / 100 / 12
+    term = term * 12;
+    interestRate = interestRate / 100 / 12;
 
-    let monthlyRepayments
+    let monthlyRepayments;
     if (type === mortgageTypes[0]) {
-      const numerator = interestRate * Math.pow(1 + interestRate, term)
-      const denominator = Math.pow(1 + interestRate, term) - 1
+      const numerator = interestRate * Math.pow(1 + interestRate, term);
+      const denominator = Math.pow(1 + interestRate, term) - 1;
 
-      monthlyRepayments = amount * (numerator / denominator)
+      monthlyRepayments = amount * (numerator / denominator);
     } else {
-      monthlyRepayments = amount * interestRate
+      monthlyRepayments = amount * interestRate;
     }
 
     onSubmit({
       monthlyRepayments,
       yearlyPayment: monthlyRepayments * term,
-    })
-  }
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
@@ -40,7 +55,7 @@ export function Calculator({ onSubmit }) {
             Mortage amount
           </label>
           <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-sky-600">
+            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-600">
               <span
                 className="flex select-none items-center pl-3 text-gray-500 sm:text-sm"
                 aria-hidden
@@ -48,17 +63,17 @@ export function Calculator({ onSubmit }) {
                 $
               </span>
               <input
+                ref={(ref) => {
+                  amountInputRef.current = ref;
+                  amountRef(ref);
+                }}
                 type="number"
                 id="amount"
                 placeholder="0.00"
                 className="block w-full border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6"
                 aria-invalid={errors.amount ? true : undefined}
                 aria-describedby="amount-error"
-                {...register('amount', {
-                  required: { value: true, message: 'Required' },
-                  min: { value: 0.01, message: 'Must be greater than 0' },
-                  valueAsNumber: true,
-                })}
+                {...amountRegister}
               />
             </div>
           </div>
@@ -76,7 +91,7 @@ export function Calculator({ onSubmit }) {
             Mortage term
           </label>
           <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-sky-600">
+            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-600">
               <input
                 type="number"
                 id="term"
@@ -84,9 +99,9 @@ export function Calculator({ onSubmit }) {
                 className="block w-full border-0 bg-transparent py-1.5 pr-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6"
                 aria-invalid={errors.term ? true : undefined}
                 aria-describedby="term-error"
-                {...register('term', {
-                  required: { value: true, message: 'Required' },
-                  min: { value: 1, message: 'Must be greater than 0' },
+                {...register("term", {
+                  required: { value: true, message: "Required" },
+                  min: { value: 1, message: "Must be greater than 0" },
                   valueAsNumber: true,
                 })}
               />
@@ -112,7 +127,7 @@ export function Calculator({ onSubmit }) {
             Interest rate
           </label>
           <div className="mt-2">
-            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-sky-600">
+            <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-lime-600">
               <input
                 type="number"
                 id="interestRate"
@@ -121,9 +136,9 @@ export function Calculator({ onSubmit }) {
                 className="block w-full border-0 bg-transparent py-1.5 pr-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm/6"
                 aria-invalid={errors.interestRate ? true : undefined}
                 aria-describedby="interestRate-error"
-                {...register('interestRate', {
-                  required: { value: true, message: 'Required' },
-                  min: { value: 1, message: 'Must be greater than 0' },
+                {...register("interestRate", {
+                  required: { value: true, message: "Required" },
+                  min: { value: 1, message: "Must be greater than 0" },
                   valueAsNumber: true,
                 })}
               />
@@ -151,10 +166,10 @@ export function Calculator({ onSubmit }) {
           <div className="mt-2">
             <select
               id="type"
-              className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-sky-600 sm:text-sm/6"
+              className="block w-full rounded-md border-0 py-1.5 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-lime-600 sm:text-sm/6"
               aria-invalid={errors.type ? true : undefined}
               aria-describedby="type-error"
-              {...register('type')}
+              {...register("type")}
             >
               {mortgageTypes.map((type) => (
                 <option key={type} value={type}>
@@ -179,11 +194,12 @@ export function Calculator({ onSubmit }) {
             className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
             aria-hidden
           >
-            <CalculatorIcon className="size-5" />
+            <CalculatorIcon className="size-4" />
           </div>
           Calculate repayments
         </button>
       </div>
     </form>
-  )
-}
+  );
+});
+Calculator.displayName = "Calculator";
